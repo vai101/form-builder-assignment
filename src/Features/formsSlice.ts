@@ -22,7 +22,13 @@ const formsSlice = createSlice({
         loadForms: (state) => {
             const storedForms = localStorage.getItem('forms');
             if (storedForms) {
-                state.forms = JSON.parse(storedForms);
+                try {
+                    state.forms = JSON.parse(storedForms);
+                } catch (error) {
+                    console.error("Failed to parse forms from localStorage, clearing data.", error);
+                    localStorage.removeItem('forms');
+                    state.forms = [];
+                }
             }
         },
     },
